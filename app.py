@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# --------------------------
-# Page Configuration
-# --------------------------
+# ==========================================
+# PAGE CONFIGURATION
+# ==========================================
 
 st.set_page_config(
     page_title="AI Data Analyst JARVIS",
@@ -12,87 +12,142 @@ st.set_page_config(
     layout="wide"
 )
 
-# --------------------------
-# Title
-# --------------------------
+# ==========================================
+# SIDEBAR
+# ==========================================
+
+with st.sidebar:
+    st.title("👩‍💻 About")
+
+    st.write(
+        """
+        **AI Data Analyst JARVIS**
+
+        AI-powered analytics dashboard built using
+        Python, Pandas, Streamlit, and Plotly.
+
+        Upload any CSV dataset and instantly generate
+        automated analysis and visualizations.
+        """
+    )
+
+    st.markdown("---")
+
+    st.markdown(
+        "[🌐 Live App](https://ai-data-jarvis-ew4nkkyz7e2bgj9iwxysh4.streamlit.app/)"
+    )
+
+    st.markdown(
+        "[💻 GitHub Repository](https://github.com/ManasiRawas/AI-Data-JARVIS)"
+    )
+
+    st.markdown(
+        "[🔗 LinkedIn](https://linkedin.com/in/manasi-rawas-analytics)"
+    )
+
+# ==========================================
+# TITLE SECTION
+# ==========================================
 
 st.title("🤖 AI Data Analyst JARVIS")
 
-# --------------------------
-# Upload CSV
-# --------------------------
+st.markdown(
+    """
+    ### Upload any CSV dataset to generate automated analysis,
+    interactive visualizations, and actionable insights within seconds.
+    """
+)
+
+st.markdown("---")
+
+# ==========================================
+# FILE UPLOAD
+# ==========================================
 
 uploaded_file = st.file_uploader(
-    "Upload CSV File",
+    "📂 Upload CSV File",
     type=["csv"]
 )
 
-# --------------------------
-# Main Application
-# --------------------------
+# ==========================================
+# MAIN APPLICATION
+# ==========================================
 
 if uploaded_file is not None:
 
-    # Read CSV
     df = pd.read_csv(uploaded_file)
 
-    st.success("Dataset Loaded Successfully")
+    st.success("✅ Dataset Loaded Successfully")
 
-    # --------------------------
-    # First 5 Rows
-    # --------------------------
+    st.markdown("---")
 
-    st.subheader("First 5 Rows")
-    st.dataframe(df.head())
+    # ======================================
+    # DATA PREVIEW
+    # ======================================
 
-    # --------------------------
-    # Dataset Overview
-    # --------------------------
+    st.subheader("📋 Dataset Preview")
 
-    st.subheader("Dataset Overview")
+    st.dataframe(
+        df.head(),
+        use_container_width=True
+    )
+
+    # ======================================
+    # DATASET OVERVIEW
+    # ======================================
+
+    st.subheader("📊 Dataset Overview")
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.metric("Rows", df.shape[0])
+        st.metric("Rows", f"{df.shape[0]:,}")
 
     with col2:
-        st.metric("Columns", df.shape[1])
+        st.metric("Columns", f"{df.shape[1]:,}")
 
-    # --------------------------
-    # Columns
-    # --------------------------
+    # ======================================
+    # COLUMN LIST
+    # ======================================
 
-    st.subheader("Columns")
+    st.subheader("🧾 Dataset Columns")
 
     st.dataframe(
         pd.DataFrame(
             {"Columns": df.columns}
-        )
+        ),
+        use_container_width=True
     )
 
-    # --------------------------
-    # Missing Values
-    # --------------------------
+    # ======================================
+    # MISSING VALUES
+    # ======================================
 
-    st.subheader("Missing Values")
+    st.subheader("⚠️ Missing Values Analysis")
 
-    missing_df = df.isnull().sum().reset_index()
+    missing_df = (
+        df.isnull()
+        .sum()
+        .reset_index()
+    )
 
     missing_df.columns = [
         "Column",
         "Missing Values"
     ]
 
-    st.dataframe(missing_df)
+    st.dataframe(
+        missing_df,
+        use_container_width=True
+    )
 
-    # --------------------------
-    # Gender Distribution
-    # --------------------------
+    # ======================================
+    # GENDER DISTRIBUTION
+    # ======================================
 
     if "gender" in df.columns:
 
-        st.subheader("Gender Distribution")
+        st.subheader("👥 Gender Distribution")
 
         gender_count = (
             df["gender"]
@@ -115,17 +170,16 @@ if uploaded_file is not None:
 
         st.plotly_chart(
             fig_gender,
-            use_container_width=True,
-            key="gender_chart"
+            use_container_width=True
         )
 
-    # --------------------------
-    # Education Level
-    # --------------------------
+    # ======================================
+    # EDUCATION LEVEL
+    # ======================================
 
     if "education_level" in df.columns:
 
-        st.subheader("Education Level")
+        st.subheader("🎓 Education Level")
 
         edu_count = (
             df["education_level"]
@@ -148,17 +202,16 @@ if uploaded_file is not None:
 
         st.plotly_chart(
             fig_education,
-            use_container_width=True,
-            key="education_chart"
+            use_container_width=True
         )
 
-    # --------------------------
-    # Experience Distribution
-    # --------------------------
+    # ======================================
+    # EXPERIENCE
+    # ======================================
 
     if "experience" in df.columns:
 
-        st.subheader("Experience Distribution")
+        st.subheader("💼 Experience Distribution")
 
         exp_count = (
             df["experience"]
@@ -181,17 +234,16 @@ if uploaded_file is not None:
 
         st.plotly_chart(
             fig_experience,
-            use_container_width=True,
-            key="experience_chart"
+            use_container_width=True
         )
 
-    # --------------------------
-    # Job Change Distribution
-    # --------------------------
+    # ======================================
+    # JOB CHANGE
+    # ======================================
 
     if "target" in df.columns:
 
-        st.subheader("Job Change Distribution")
+        st.subheader("🎯 Job Change Distribution")
 
         target_count = (
             df["target"]
@@ -213,25 +265,25 @@ if uploaded_file is not None:
 
         st.plotly_chart(
             fig_target,
-            use_container_width=True,
-            key="target_chart"
+            use_container_width=True
         )
 
-    # --------------------------
-    # Dataset Statistics
-    # --------------------------
+    # ======================================
+    # STATISTICS
+    # ======================================
 
-    st.subheader("Dataset Statistics")
+    st.subheader("📈 Dataset Statistics")
 
     st.dataframe(
-        df.describe(include="all")
+        df.describe(include="all"),
+        use_container_width=True
     )
 
-    # --------------------------
-    # Download Dataset
-    # --------------------------
+    # ======================================
+    # DOWNLOAD
+    # ======================================
 
-    st.subheader("Download Dataset")
+    st.subheader("📥 Download Processed Dataset")
 
     csv = df.to_csv(index=False)
 
@@ -240,4 +292,16 @@ if uploaded_file is not None:
         data=csv,
         file_name="processed_dataset.csv",
         mime="text/csv"
+    )
+
+    st.markdown("---")
+
+    st.caption(
+        "Built by Manasi Rawas | Data Analytics • Data Science • AI"
+    )
+
+else:
+
+    st.info(
+        "👆 Upload a CSV file to start analyzing your data."
     )
